@@ -16,6 +16,7 @@ import com.example.snapshots_da.databinding.ItemSnapshotBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.database.SnapshotParser
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import java.math.MathContext
@@ -41,7 +42,7 @@ class HomeFragment : Fragment() {
         val query = FirebaseDatabase.getInstance().reference.child("snapshots")
 
         val options =
-        FirebaseRecyclerOptions.Builder<Snapshot>().setQuery(query, SnapshotParser {
+        FirebaseRecyclerOptions.Builder<Snapshot>().setQuery(query, {
             val snapshot = it.getValue(Snapshot::class.java)
             snapshot!!.id = it.key!!
             snapshot
@@ -109,7 +110,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun  setLike(snapshot: Snapshot,checked: Boolean){
-
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("snapshots")
+        if (checked){
+            databaseReference.child(snapshot.id).child("likeList")
+                .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(checked)
+        }else{
+            databaseReference.child(snapshot.id).child("likeList")
+                .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(null)
+        }
     }
 
     inner class SnapshotHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -117,6 +125,10 @@ class HomeFragment : Fragment() {
 
         fun setListener(snapshot: Snapshot){
             binding.btnDelete.setOnClickListener{ deleteSnapshot(snapshot) }
+
+            binding.cbLike.setOnCheckedChangeListener{ compoundButton, checked ->
+                setLike(snapshot,checked)
+            }
         }
     }
 
