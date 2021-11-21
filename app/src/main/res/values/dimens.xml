@@ -12,7 +12,7 @@
     <dimen name="circle_radius">28dp</dimen>
     <dimen name="common_padding_micro">4dp</dimen>
     <dimen name="material_card_spacing">8dp</dimen>
-    <dimen name="common_padding_none">odp</dimen>
+    <dimen name="common_padding_none">0dp</dimen>
     <dimen name="card_img_size">40dp</dimen>
     <dimen name="common_padding_middle">24dp</dimen>
     <dimen name="card_baseline_topTitle">44dp</dimen>
