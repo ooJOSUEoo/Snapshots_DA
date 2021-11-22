@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import java.math.MathContext
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment() , HomeAux{
 
     private lateinit var mBinding: FragmentHomeBinding
     private lateinit var mFirebaseAdapter: FirebaseRecyclerAdapter<Snapshot, SnapshotHolder>
@@ -107,6 +107,10 @@ class HomeFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mFirebaseAdapter.stopListening()
+    }
+
+    override fun goTOTop() {
+        mBinding.recyclerView.smoothScrollToPosition(0)
     }
 
     private fun deleteSnapshot(snapshot: Snapshot){
